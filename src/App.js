@@ -1,7 +1,8 @@
 import "./App.css";
+import Login from "./components/Login/Login";
 
 const App = () => {
-  return <div>goscrum</div>;
+  return <Login />;
 };
 
 export default App;
