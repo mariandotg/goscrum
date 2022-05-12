@@ -1,17 +1,30 @@
-import { useState } from "react";
+import { useFormik } from "formik";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (!email || !password) {
-      alert("Necesitas completar los campos para avanzar");
-    } else {
-      window.location = "https://twitter.com";
-    }
+  const initialValues = {
+    email: "",
+    password: "",
   };
+
+  const validate = (values) => {
+    const errors = {};
+
+    if (!values.email) {
+      errors.email = "El email es requerido";
+    }
+    if (!values.password) {
+      errors.password = "El password es requerido";
+    }
+
+    return errors;
+  };
+
+  const onSubmit = () => {
+    localStorage.setItem("logged", "yes");
+  };
+
+  const formik = useFormik({ initialValues, validate, onSubmit });
+  const { handleSubmit, handleChange, values, errors } = formik;
 
   return (
     <div className="container">
@@ -22,18 +35,20 @@ const Login = () => {
           <input
             name="email"
             type="email"
-            value={email}
-            onChange={(event) => setEmail(event.currentTarget.value)}
+            value={values.email}
+            onChange={handleChange}
           />
+          {errors.email && <div>{errors.email}</div>}
         </div>
         <div>
           <label>Contraseña</label>
           <input
             name="password"
             type="password"
-            value={password}
-            onChange={(event) => setPassword(event.currentTarget.value)}
+            value={values.password}
+            onChange={handleChange}
           />
+          {errors.password && <div>{errors.password}</div>}
         </div>
         <div>
           <button type="submit">Enviar</button>
