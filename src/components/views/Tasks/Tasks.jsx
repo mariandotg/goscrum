@@ -1,5 +1,7 @@
+import Header from "../../Header/Header";
+
 const Tasks = () => {
-  return <div className="container">Tasks</div>;
+  return <Header />;
 };
 
 export default Tasks;
