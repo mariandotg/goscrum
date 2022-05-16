@@ -8,3 +8,7 @@ header {
 header > img {
   width: 90px;
 }
+
+header > div {
+  cursor: pointer;
+}
