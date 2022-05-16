@@ -1,6 +1,9 @@
 import { useFormik } from "formik";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const initialValues = {
     email: "",
     password: "",
@@ -21,6 +24,7 @@ const Login = () => {
 
   const onSubmit = () => {
     localStorage.setItem("logged", "yes");
+    navigate("/", { replace: true });
   };
 
   const formik = useFormik({ initialValues, validate, onSubmit });
