@@ -1,6 +1,8 @@
+import { cardsData } from "./data";
 import { useResize } from "../../../hooks/useResize";
 import "./Tasks.styles.css";
 import Header from "../../Header/Header";
+import Card from "../../Card/Card";
 
 const Tasks = () => {
   const { isPhone } = useResize();
@@ -12,6 +14,10 @@ const Tasks = () => {
     return { string, addButton: false };
   };
 
+  const renderAllCards = () => {
+    return cardsData.map((data) => <Card key={data.id} data={data} />);
+  };
+
   return (
     <>
       <Header />
@@ -21,50 +27,7 @@ const Tasks = () => {
             <h2>Mis tareas</h2>
           </div>
           {isPhone ? (
-            <div className="list phone">
-              <div className="card">
-                <div className="close">X</div>
-                <h3>Tarea 1</h3>
-                <h6>24/1/2022 16:40hs</h6>
-                <h5>Julio Avantt</h5>
-                <button type="button">Nueva</button>
-                <button type="button">Alta</button>
-                <p>
-                  {
-                    limitString(`Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex
-                  eius suscipit, ipsam voluptatem nulla ut? Consequatur quod
-                  velit doloremque nihil earum, voluptates, itaque, possimus
-                  nobis quasi modi qui veritatis unde?
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex
-                  eius suscipit, ipsam voluptatem nulla ut? Consequatur quod
-                  velit doloremque nihil earum, voluptates, itaque, possimus
-                  nobis quasi modi qui veritatis unde?
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex
-                  eius suscipit, ipsam voluptatem nulla ut? Consequatur quod
-                  velit doloremque nihil earum, voluptates, itaque, possimus
-                  nobis quasi modi qui veritatis unde?`).string
-                  }
-                </p>
-              </div>
-              <div className="card">
-                <div className="close">X</div>
-                <h3>Tarea 1</h3>
-                <h6>24/1/2022 16:40hs</h6>
-                <h5>Julio Avantt</h5>
-                <button type="button">Nueva</button>
-                <button type="button">Alta</button>
-                <p>Descripción</p>
-              </div>
-              <div className="card">
-                <div className="close">X</div>
-                <h3>Tarea 1</h3>
-                <h6>24/1/2022 16:40hs</h6>
-                <h5>Julio Avantt</h5>
-                <button type="button">Nueva</button>
-                <button type="button">Alta</button>
-                <p>Descripción</p>
-              </div>
-            </div>
+            <div className="list phone">{renderAllCards()}</div>
           ) : (
             <div className="list_group">
               <div className="list">
