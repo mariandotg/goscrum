@@ -17,6 +17,14 @@ const Tasks = () => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   });
+
+  const limitString = (string) => {
+    if (string.length > 370) {
+      return { string: string.slice(0, 367).concat("..."), addButton: true };
+    }
+    return { string, addButton: false };
+  };
+
   return (
     <>
       <Header />
@@ -34,7 +42,22 @@ const Tasks = () => {
                 <h5>Julio Avantt</h5>
                 <button type="button">Nueva</button>
                 <button type="button">Alta</button>
-                <p>Descripción</p>
+                <p>
+                  {
+                    limitString(`Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex
+                  eius suscipit, ipsam voluptatem nulla ut? Consequatur quod
+                  velit doloremque nihil earum, voluptates, itaque, possimus
+                  nobis quasi modi qui veritatis unde?
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex
+                  eius suscipit, ipsam voluptatem nulla ut? Consequatur quod
+                  velit doloremque nihil earum, voluptates, itaque, possimus
+                  nobis quasi modi qui veritatis unde?
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex
+                  eius suscipit, ipsam voluptatem nulla ut? Consequatur quod
+                  velit doloremque nihil earum, voluptates, itaque, possimus
+                  nobis quasi modi qui veritatis unde?`).string
+                  }
+                </p>
               </div>
               <div className="card">
                 <div className="close">X</div>
