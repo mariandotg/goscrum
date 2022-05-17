@@ -32,7 +32,7 @@ const Login = () => {
   const { handleSubmit, handleChange, values, errors } = formik;
 
   return (
-    <div className="container">
+    <div className="auth">
       <form onSubmit={handleSubmit}>
         <h1>Iniciar sesión</h1>
         <div>
