@@ -1,22 +1,9 @@
-import { useEffect, useState } from "react";
+import { useResize } from "../../../hooks/useResize";
 import "./Tasks.styles.css";
 import Header from "../../Header/Header";
 
 const Tasks = () => {
-  const [isPhone, setIsPhone] = useState(
-    window.innerWidth < 900 ? true : false
-  );
-
-  const handleResize = () => {
-    if (window.innerWidth < 900) setIsPhone(true);
-    else setIsPhone(false);
-  };
-
-  useEffect(() => {
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  });
+  const { isPhone } = useResize();
 
   const limitString = (string) => {
     if (string.length > 370) {
