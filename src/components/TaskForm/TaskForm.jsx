@@ -1,3 +1,5 @@
+import "./TaskForm.styles.css";
+
 const TaskForm = () => {
   return (
     <section className="task-form">
