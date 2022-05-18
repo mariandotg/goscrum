@@ -3,6 +3,7 @@ import { useResize } from "../../../hooks/useResize";
 import "./Tasks.styles.css";
 import Header from "../../Header/Header";
 import Card from "../../Card/Card";
+import TaskForm from "../../TaskForm/TaskForm";
 
 const Tasks = () => {
   const { isPhone } = useResize();
@@ -22,6 +23,7 @@ const Tasks = () => {
     <>
       <Header />
       <main id="tasks">
+        <TaskForm />
         <section className="wrapper_list">
           <div className="list_header">
             <h2>Mis tareas</h2>
