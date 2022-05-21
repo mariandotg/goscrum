@@ -1,4 +1,5 @@
 import { useFormik } from "formik";
+import "../Auth.styles.css";
 
 const Register = () => {
   const initialValues = {
