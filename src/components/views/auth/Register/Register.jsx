@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
 import { useFormik } from "formik";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
+import { v4 as uuidv4 } from "uuid";
 import { Switch, FormControlLabel } from "@mui/material";
 import "../Auth.styles.css";
 
 const Register = () => {
   const [data, setData] = useState();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch("https://goscrum-api.alkemy.org/auth/data")
@@ -33,7 +36,6 @@ const Register = () => {
       .required(required),
     password: Yup.string().required(required),
     email: Yup.string().email("Debe ser un email válido").required(required),
-    //teamID: Yup.string().required(required),
     role: Yup.string().required(required),
     continent: Yup.string().required(required),
     region: Yup.string().required(required),
@@ -45,7 +47,28 @@ const Register = () => {
   };
 
   const onSubmit = () => {
-    alert();
+    const teamID = !values.teamID ? uuidv4() : values.teamID;
+    fetch("https://goscrum-api.alkemy.org/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user: {
+          userName: values.userName,
+          password: values.password,
+          email: values.email,
+          teamID,
+          role: values.role,
+          continent: values.continent,
+          region: values.region,
+        },
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) =>
+        navigate(`/registered/${data?.result?.user?.teamID}`, { replace: true })
+      );
   };
 
   const formik = useFormik({ initialValues, validationSchema, onSubmit });
