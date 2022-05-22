@@ -4,8 +4,8 @@ import Login from "./components/views/auth/Login/Login";
 import Register from "./components/views/auth/Register/Register";
 import Error404 from "./components/views/Error 404/Error404";
 import Tasks from "./components/views/Tasks/Tasks";
-import "./App.css";
 import Registered from "./components/views/Registered/Registered";
+import "./App.css";
 
 const RequireAuth = ({ children }) => {
   if (!localStorage.getItem("logged")) {
@@ -22,6 +22,7 @@ const pageTransition = {
     opacity: 0,
   },
 };
+
 const App = () => {
   const location = useLocation();
 
