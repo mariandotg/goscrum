@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import { Link } from "react-router-dom";
 import * as Yup from "yup";
+import { Switch, FormControlLabel } from "@mui/material";
 import "../Auth.styles.css";
 
 const Register = () => {
@@ -13,7 +14,6 @@ const Register = () => {
       .then((data) => setData(data.result));
   }, []);
 
-  console.log(data);
   const initialValues = {
     userName: "",
     password: "",
@@ -22,6 +22,7 @@ const Register = () => {
     role: "",
     continent: "",
     region: "",
+    switch: false,
   };
 
   const required = "* Campo obligatorio";
@@ -38,13 +39,25 @@ const Register = () => {
     region: Yup.string().required(required),
   });
 
+  const handleChangeContinent = (value) => {
+    setFieldValue("continent", value);
+    if (value !== "America") setFieldValue("region", "Otro");
+  };
+
   const onSubmit = () => {
     alert();
   };
 
   const formik = useFormik({ initialValues, validationSchema, onSubmit });
-  const { handleSubmit, handleChange, handleBlur, errors, values, touched } =
-    formik;
+  const {
+    handleSubmit,
+    handleChange,
+    handleBlur,
+    errors,
+    values,
+    touched,
+    setFieldValue,
+  } = formik;
 
   return (
     <div className="auth">
@@ -92,7 +105,30 @@ const Register = () => {
             <span className="error-message">{errors.email}</span>
           )}
         </div>
-        <input type="hidden" name="teamID" value="teamid" />
+        <FormControlLabel
+          control={
+            <Switch
+              value={values.switch}
+              onChange={() =>
+                formik.setFieldValue("switch", !formik.values.switch)
+              }
+              name="switch"
+              color="secondary"
+            />
+          }
+          label="Perteneces a un equipo ya creado"
+        />
+        {values.switch && (
+          <div>
+            <label>Por favor introduce el identificador de equipo</label>
+            <input
+              type="text"
+              name="teamID"
+              value={values.teamID}
+              onChange={handleChange}
+            />
+          </div>
+        )}
         <div>
           <label>Rol</label>
           <select
@@ -118,7 +154,9 @@ const Register = () => {
           <select
             name="continent"
             value={values.continent}
-            onChange={handleChange}
+            onChange={(event) =>
+              handleChangeContinent(event.currentTarget.value)
+            }
             onBlur={handleBlur}
             className={errors.continent && touched.continent ? "error" : ""}
           >
