@@ -31,9 +31,16 @@
   font-size: 15px;
 }
 
-.auth input {
+.auth input,
+.auth select {
   border-radius: var(--global-radius);
   border: var(--global-border);
+}
+
+.auth input.error,
+.auth select.error,
+.auth textarea.error {
+  border: 1px solid red;
 }
 
 .auth button {
