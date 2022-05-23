@@ -6,13 +6,15 @@ import { v4 as uuidv4 } from "uuid";
 import { Switch, FormControlLabel } from "@mui/material";
 import "../Auth.styles.css";
 
+const { REACT_APP_API_ENDPOINT } = process.env;
+
 const Register = () => {
   const [data, setData] = useState();
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("https://goscrum-api.alkemy.org/auth/data")
+    fetch(`${REACT_APP_API_ENDPOINT}/auth/data`)
       .then((response) => response.json())
       .then((data) => setData(data.result));
   }, []);
@@ -48,7 +50,7 @@ const Register = () => {
 
   const onSubmit = () => {
     const teamID = !values.teamID ? uuidv4() : values.teamID;
-    fetch("https://goscrum-api.alkemy.org/auth/register", {
+    fetch(`${REACT_APP_API_ENDPOINT}/auth/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
