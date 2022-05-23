@@ -8,7 +8,7 @@ import Registered from "./components/views/Registered/Registered";
 import "./App.css";
 
 const RequireAuth = ({ children }) => {
-  if (!localStorage.getItem("logged")) {
+  if (!localStorage.getItem("token")) {
     return <Navigate to="/login" replace={true} />;
   }
   return children;
