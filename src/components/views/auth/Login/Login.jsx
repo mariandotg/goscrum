@@ -36,8 +36,12 @@ const Login = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        localStorage.setItem("token", data?.result?.token);
-        navigate(`/`, { replace: true });
+        if (data.status_code === 200) {
+          localStorage.setItem("token", data?.result?.token);
+          navigate(`/`, { replace: true });
+        } else {
+          alert("Malas credenciales");
+        }
       });
   };
 
