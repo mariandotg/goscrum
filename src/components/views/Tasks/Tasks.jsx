@@ -6,6 +6,12 @@ import "./Tasks.styles.css";
 import Header from "../../Header/Header";
 import Card from "../../Card/Card";
 import TaskForm from "../../TaskForm/TaskForm";
+import {
+  FormControl,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+} from "@mui/material";
 
 const { REACT_APP_API_ENDPOINT } = process.env;
 
@@ -61,6 +67,33 @@ const Tasks = () => {
         <section className="wrapper_list">
           <div className="list_header">
             <h2>Mis tareas</h2>
+          </div>
+          <div className="filters">
+            <FormControl>
+              <RadioGroup
+                row
+                aria-labelledby="demo-row-radio-buttons-group-label"
+                name="row-radio-buttons-group"
+              >
+                <FormControlLabel
+                  value="ALL"
+                  control={<Radio />}
+                  label="Todas"
+                />
+                <FormControlLabel
+                  value="ME"
+                  control={<Radio />}
+                  label="Mis tareas"
+                />
+              </RadioGroup>
+            </FormControl>
+            <select name="importance" onChange={() => {}}>
+              <option value="">Seleccionar una prioridad</option>
+              <option value="ALL">Todas</option>
+              <option value="LOW">Baja</option>
+              <option value="MEDIUM">Media</option>
+              <option value="HIGH">Alta</option>
+            </select>
           </div>
           {isPhone ? (
             !list?.length ? (
