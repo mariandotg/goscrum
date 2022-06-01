@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
+import Skeleton from "react-loading-skeleton";
 import { useResize } from "../../../hooks/useResize";
+import "react-loading-skeleton/dist/skeleton.css";
 import "./Tasks.styles.css";
 import Header from "../../Header/Header";
 import Card from "../../Card/Card";
@@ -23,7 +25,9 @@ const Tasks = () => {
       .then((response) => response.json())
       .then((data) => {
         setList(data.result);
-        setLoading(false);
+        setTimeout(() => {
+          setLoading(false);
+        }, 4000);
       });
   }, []);
 
@@ -61,6 +65,12 @@ const Tasks = () => {
           {isPhone ? (
             !list?.length ? (
               <div>No hay tareas creadas</div>
+            ) : loading ? (
+              <>
+                <Skeleton height={90} />
+                <Skeleton height={90} />
+                <Skeleton height={90} />
+              </>
             ) : (
               <div className="list phone">{renderAllCards()}</div>
             )
@@ -68,6 +78,12 @@ const Tasks = () => {
             <div className="list_group">
               {!list?.length ? (
                 <div>No hay tareas creadas</div>
+              ) : loading ? (
+                <>
+                  <Skeleton height={90} />
+                  <Skeleton height={90} />
+                  <Skeleton height={90} />
+                </>
               ) : (
                 <>
                   <div className="list">
