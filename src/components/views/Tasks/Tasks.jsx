@@ -23,15 +23,26 @@ const Tasks = () => {
       .then((data) => setList(data.result));
   }, []);
 
-  const limitString = (string) => {
-    if (string.length > 370) {
-      return { string: string.slice(0, 367).concat("..."), addButton: true };
-    }
-    return { string, addButton: false };
-  };
-
   const renderAllCards = () => {
     return list?.map((data) => <Card key={data._id} data={data} />);
+  };
+
+  const renderNewCards = () => {
+    return list
+      ?.filter((data) => data.status === "NEW")
+      .map((data) => <Card key={data._id} data={data} />);
+  };
+
+  const renderInProgressCards = () => {
+    return list
+      ?.filter((data) => data.status === "IN PROGRESS")
+      .map((data) => <Card key={data._id} data={data} />);
+  };
+
+  const renderFinishedCards = () => {
+    return list
+      ?.filter((data) => data.status === "FINISHED")
+      .map((data) => <Card key={data._id} data={data} />);
   };
 
   return (
@@ -49,39 +60,15 @@ const Tasks = () => {
             <div className="list_group">
               <div className="list">
                 <h4>Nuevas</h4>
-                <div className="card">
-                  <div className="close">X</div>
-                  <h3>Tarea 1</h3>
-                  <h6>24/1/2022 16:40hs</h6>
-                  <h5>Julio Avantt</h5>
-                  <button type="button">Nueva</button>
-                  <button type="button">Alta</button>
-                  <p>Descripción</p>
-                </div>
+                {renderNewCards()}
               </div>
               <div className="list">
                 <h4>En proceso</h4>
-                <div className="card">
-                  <div className="close">X</div>
-                  <h3>Tarea 1</h3>
-                  <h6>24/1/2022 16:40hs</h6>
-                  <h5>Julio Avantt</h5>
-                  <button type="button">Nueva</button>
-                  <button type="button">Alta</button>
-                  <p>Descripción</p>
-                </div>
+                {renderInProgressCards()}
               </div>
               <div className="list">
                 <h4>Finalizadas</h4>
-                <div className="card">
-                  <div className="close">X</div>
-                  <h3>Tarea 1</h3>
-                  <h6>24/1/2022 16:40hs</h6>
-                  <h5>Julio Avantt</h5>
-                  <button type="button">Nueva</button>
-                  <button type="button">Alta</button>
-                  <p>Descripción</p>
-                </div>
+                {renderFinishedCards()}
               </div>
             </div>
           )}
