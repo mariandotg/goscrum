@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { cardsData } from "./data";
 import { useResize } from "../../../hooks/useResize";
 import "./Tasks.styles.css";
@@ -5,8 +6,22 @@ import Header from "../../Header/Header";
 import Card from "../../Card/Card";
 import TaskForm from "../../TaskForm/TaskForm";
 
+const { REACT_APP_API_ENDPOINT } = process.env;
+
 const Tasks = () => {
+  const [list, setList] = useState();
   const { isPhone } = useResize();
+
+  useEffect(() => {
+    fetch(`${REACT_APP_API_ENDPOINT}/task`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => setList(data.result));
+  }, []);
 
   const limitString = (string) => {
     if (string.length > 370) {
@@ -16,7 +31,7 @@ const Tasks = () => {
   };
 
   const renderAllCards = () => {
-    return cardsData.map((data) => <Card key={data.id} data={data} />);
+    return list?.map((data) => <Card key={data._id} data={data} />);
   };
 
   return (
