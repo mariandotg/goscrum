@@ -17,6 +17,7 @@ const { REACT_APP_API_ENDPOINT } = process.env;
 
 const Tasks = () => {
   const [list, setList] = useState(null);
+  const [renderList, setRenderList] = useState(null);
   const [loading, setLoading] = useState(false);
   const { isPhone } = useResize();
 
@@ -31,6 +32,7 @@ const Tasks = () => {
       .then((response) => response.json())
       .then((data) => {
         setList(data.result);
+        setRenderList(data.result);
         setTimeout(() => {
           setLoading(false);
         }, 4000);
@@ -38,25 +40,33 @@ const Tasks = () => {
   }, []);
 
   const renderAllCards = () => {
-    return list?.map((data) => <Card key={data._id} data={data} />);
+    return renderList?.map((data) => <Card key={data._id} data={data} />);
   };
 
   const renderNewCards = () => {
-    return list
+    return renderList
       ?.filter((data) => data.status === "NEW")
       .map((data) => <Card key={data._id} data={data} />);
   };
 
   const renderInProgressCards = () => {
-    return list
+    return renderList
       ?.filter((data) => data.status === "IN PROGRESS")
       .map((data) => <Card key={data._id} data={data} />);
   };
 
   const renderFinishedCards = () => {
-    return list
+    return renderList
       ?.filter((data) => data.status === "FINISHED")
       .map((data) => <Card key={data._id} data={data} />);
+  };
+
+  const handleChangeImportance = (event) => {
+    if (event.currentTarget.value === "ALL") setRenderList(list);
+    else
+      setRenderList(
+        list.filter((data) => data.importance === event.currentTarget.value)
+      );
   };
 
   return (
@@ -87,7 +97,7 @@ const Tasks = () => {
                 />
               </RadioGroup>
             </FormControl>
-            <select name="importance" onChange={() => {}}>
+            <select name="importance" onChange={handleChangeImportance}>
               <option value="">Seleccionar una prioridad</option>
               <option value="ALL">Todas</option>
               <option value="LOW">Baja</option>
@@ -96,7 +106,7 @@ const Tasks = () => {
             </select>
           </div>
           {isPhone ? (
-            !list?.length ? (
+            !renderList?.length ? (
               <div>No hay tareas creadas</div>
             ) : loading ? (
               <>
@@ -109,7 +119,7 @@ const Tasks = () => {
             )
           ) : (
             <div className="list_group">
-              {!list?.length ? (
+              {!renderList?.length ? (
                 <div>No hay tareas creadas</div>
               ) : loading ? (
                 <>
