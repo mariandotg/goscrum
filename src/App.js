@@ -1,13 +1,14 @@
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import Login from "./components/views/Login/Login";
-import Register from "./components/views/Register/Register";
+import Login from "./components/views/auth/Login/Login";
+import Register from "./components/views/auth/Register/Register";
 import Error404 from "./components/views/Error 404/Error404";
 import Tasks from "./components/views/Tasks/Tasks";
+import Registered from "./components/views/Registered/Registered";
 import "./App.css";
 
 const RequireAuth = ({ children }) => {
-  if (!localStorage.getItem("logged")) {
+  if (!localStorage.getItem("token")) {
     return <Navigate to="/login" replace={true} />;
   }
   return children;
@@ -21,6 +22,7 @@ const pageTransition = {
     opacity: 0,
   },
 };
+
 const App = () => {
   const location = useLocation();
 
@@ -68,6 +70,20 @@ const App = () => {
               variants={pageTransition}
             >
               <Register />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/registered/:teamID"
+          element={
+            <motion.div
+              className="page"
+              initial="out"
+              animate="in"
+              exit="out"
+              variants={pageTransition}
+            >
+              <Registered />
             </motion.div>
           }
         />
