@@ -57,21 +57,9 @@ const Tasks = () => {
     return renderList?.map((data) => <Card key={data._id} data={data} />);
   };
 
-  const renderNewCards = () => {
+  const renderColumnCards = (text) => {
     return renderList
-      ?.filter((data) => data.status === "NEW")
-      .map((data) => <Card key={data._id} data={data} />);
-  };
-
-  const renderInProgressCards = () => {
-    return renderList
-      ?.filter((data) => data.status === "IN PROGRESS")
-      .map((data) => <Card key={data._id} data={data} />);
-  };
-
-  const renderFinishedCards = () => {
-    return renderList
-      ?.filter((data) => data.status === "FINISHED")
+      ?.filter((data) => data.status === text)
       .map((data) => <Card key={data._id} data={data} />);
   };
 
@@ -156,15 +144,15 @@ const Tasks = () => {
                 <>
                   <div className="list">
                     <h4>Nuevas</h4>
-                    {renderNewCards()}
+                    {renderColumnCards("NEW")}
                   </div>
                   <div className="list">
                     <h4>En proceso</h4>
-                    {renderInProgressCards()}
+                    {renderColumnCards("IN PROGRESS")}
                   </div>
                   <div className="list">
                     <h4>Finalizadas</h4>
-                    {renderFinishedCards()}
+                    {renderColumnCards("FINISHED")}
                   </div>
                 </>
               )}
