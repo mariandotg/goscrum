@@ -1,17 +1,18 @@
 import { useState, useEffect } from "react";
 import Skeleton from "react-loading-skeleton";
-import { useResize } from "../../../hooks/useResize";
-import "react-loading-skeleton/dist/skeleton.css";
-import "./Tasks.styles.css";
-import Header from "../../Header/Header";
-import Card from "../../Card/Card";
-import TaskForm from "../../TaskForm/TaskForm";
+import debounce from "lodash.debounce";
 import {
   FormControl,
   FormControlLabel,
   Radio,
   RadioGroup,
 } from "@mui/material";
+import "react-loading-skeleton/dist/skeleton.css";
+import "./Tasks.styles.css";
+import { useResize } from "../../../hooks/useResize";
+import Header from "../../Header/Header";
+import Card from "../../Card/Card";
+import TaskForm from "../../TaskForm/TaskForm";
 
 const { REACT_APP_API_ENDPOINT } = process.env;
 
@@ -20,6 +21,7 @@ const Tasks = () => {
   const [list, setList] = useState(null);
   const [renderList, setRenderList] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [search, setSearch] = useState("");
   const { isPhone } = useResize();
 
   useEffect(() => {
@@ -42,6 +44,14 @@ const Tasks = () => {
         }, 4000);
       });
   }, [tasksFromWho]);
+
+  useEffect(() => {
+    if (search) {
+      setRenderList(list.filter((data) => data.title.startsWith(search)));
+    } else {
+      setRenderList(list);
+    }
+  }, [search]);
 
   const renderAllCards = () => {
     return renderList?.map((data) => <Card key={data._id} data={data} />);
@@ -73,6 +83,10 @@ const Tasks = () => {
       );
   };
 
+  const handleSearch = debounce((event) => {
+    setSearch(event?.target?.value);
+  }, 1000);
+
   return (
     <>
       <Header />
@@ -101,6 +115,13 @@ const Tasks = () => {
                 />
               </RadioGroup>
             </FormControl>
+            <div className="search">
+              <input
+                type="text"
+                placeholder="Buscar por titulo..."
+                onChange={handleSearch}
+              />
+            </div>
             <select name="importance" onChange={handleChangeImportance}>
               <option value="">Seleccionar una prioridad</option>
               <option value="ALL">Todas</option>
