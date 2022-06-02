@@ -16,13 +16,13 @@ export const tasksFailure = (error) => ({
 
 export const getTasks = (path) => (dispatch) => {
   dispatch(tasksRequest());
-  fetch(`${REACT_APP_API_ENDPOINT}/task/${path}`, {
+  fetch(`${REACT_APP_API_ENDPOINT}/task${path}`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("token"),
     },
   })
-    .then((response) => response.json)
+    .then((response) => response.json())
     .then((data) => {
       dispatch(tasksSuccess(data.result));
     })
