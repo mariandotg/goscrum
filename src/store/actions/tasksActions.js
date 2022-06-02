@@ -14,7 +14,7 @@ export const tasksFailure = (error) => ({
   payload: error,
 });
 
-const tasksActions = (path) => (dispatch) => {
+export const getTasks = (path) => (dispatch) => {
   dispatch(tasksRequest());
   fetch(`${REACT_APP_API_ENDPOINT}/task/${path}`, {
     headers: {
@@ -30,5 +30,3 @@ const tasksActions = (path) => (dispatch) => {
       dispatch(tasksFailure(error));
     });
 };
-
-export default tasksActions;
