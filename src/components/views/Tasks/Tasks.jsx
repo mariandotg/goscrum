@@ -16,6 +16,7 @@ import {
 const { REACT_APP_API_ENDPOINT } = process.env;
 
 const Tasks = () => {
+  const [tasksFromWho, setTasksFromWho] = useState("ALL");
   const [list, setList] = useState(null);
   const [renderList, setRenderList] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -23,12 +24,15 @@ const Tasks = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`${REACT_APP_API_ENDPOINT}/task`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      },
-    })
+    fetch(
+      `${REACT_APP_API_ENDPOINT}/task${tasksFromWho === "ME" ? "/me" : ""}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
         setList(data.result);
@@ -37,7 +41,7 @@ const Tasks = () => {
           setLoading(false);
         }, 4000);
       });
-  }, []);
+  }, [tasksFromWho]);
 
   const renderAllCards = () => {
     return renderList?.map((data) => <Card key={data._id} data={data} />);
@@ -83,7 +87,7 @@ const Tasks = () => {
               <RadioGroup
                 row
                 aria-labelledby="demo-row-radio-buttons-group-label"
-                name="row-radio-buttons-group"
+                onChange={(event) => setTasksFromWho(event.currentTarget.value)}
               >
                 <FormControlLabel
                   value="ALL"
