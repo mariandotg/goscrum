@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Skeleton from "react-loading-skeleton";
 import debounce from "lodash.debounce";
+import { useSelector, useDispatch } from "react-redux";
 import {
   FormControl,
   FormControlLabel,
@@ -9,41 +10,35 @@ import {
 } from "@mui/material";
 import "react-loading-skeleton/dist/skeleton.css";
 import "./Tasks.styles.css";
+import { getTasks } from "../../../store/actions/tasksActions";
 import { useResize } from "../../../hooks/useResize";
 import Header from "../../Header/Header";
 import Card from "../../Card/Card";
 import TaskForm from "../../TaskForm/TaskForm";
 
-const { REACT_APP_API_ENDPOINT } = process.env;
-
 const Tasks = () => {
   const [tasksFromWho, setTasksFromWho] = useState("ALL");
   const [list, setList] = useState(null);
   const [renderList, setRenderList] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const { isPhone } = useResize();
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    setLoading(true);
-    fetch(
-      `${REACT_APP_API_ENDPOINT}/task${tasksFromWho === "ME" ? "/me" : ""}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        setList(data.result);
-        setRenderList(data.result);
-        setTimeout(() => {
-          setLoading(false);
-        }, 4000);
-      });
+    dispatch(getTasks(tasksFromWho === "ME" ? "/me" : ""));
   }, [tasksFromWho]);
+
+  const { loading, tasks, error } = useSelector((state) => {
+    return state.tasksReducer;
+  });
+
+  useEffect(() => {
+    if (tasks?.length) {
+      setList(tasks);
+      setRenderList(tasks);
+    }
+  }, [tasks]);
 
   useEffect(() => {
     if (search) {
@@ -52,6 +47,8 @@ const Tasks = () => {
       setRenderList(list);
     }
   }, [search]);
+
+  if (error) return <div>Hay un error</div>;
 
   const renderAllCards = () => {
     return renderList?.map((data) => <Card key={data._id} data={data} />);
