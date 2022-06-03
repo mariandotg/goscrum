@@ -74,3 +74,19 @@ export const editTaskStatus = (data) => (dispatch) => {
       dispatch(tasksFailure(error));
     });
 };
+
+export const submitTask = (task) => (dispatch) => {
+  fetch(`${REACT_APP_API_ENDPOINT}/task`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("token"),
+    },
+    body: JSON.stringify({ task }),
+  })
+    .then((response) => response.json())
+    .then(() => dispatch(getTasks("")))
+    .catch((error) => {
+      dispatch(tasksFailure(error));
+    });
+};
