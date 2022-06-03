@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import "react-loading-skeleton/dist/skeleton.css";
 import "./Tasks.styles.css";
-import { getTasks } from "../../../store/actions/tasksActions";
+import { getTasks, deleteTask } from "../../../store/actions/tasksActions";
 import { useResize } from "../../../hooks/useResize";
 import Header from "../../Header/Header";
 import Card from "../../Card/Card";
@@ -51,13 +51,17 @@ const Tasks = () => {
   if (error) return <div>Hay un error</div>;
 
   const renderAllCards = () => {
-    return renderList?.map((data) => <Card key={data._id} data={data} />);
+    return renderList?.map((data) => (
+      <Card key={data._id} data={data} deleteCard={handleDelete} />
+    ));
   };
 
   const renderColumnCards = (text) => {
     return renderList
       ?.filter((data) => data.status === text)
-      .map((data) => <Card key={data._id} data={data} />);
+      .map((data) => (
+        <Card key={data._id} data={data} deleteCard={handleDelete} />
+      ));
   };
 
   const handleChangeImportance = (event) => {
@@ -71,6 +75,8 @@ const Tasks = () => {
   const handleSearch = debounce((event) => {
     setSearch(event?.target?.value);
   }, 1000);
+
+  const handleDelete = (id) => dispatch(deleteTask(id));
 
   return (
     <>

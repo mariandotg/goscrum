@@ -30,3 +30,19 @@ export const getTasks = (path) => (dispatch) => {
       dispatch(tasksFailure(error));
     });
 };
+
+export const deleteTask = (id) => (dispatch) => {
+  dispatch(tasksRequest());
+  fetch(`${REACT_APP_API_ENDPOINT}/task/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("token"),
+    },
+  })
+    .then((response) => response.json())
+    .then(() => dispatch(getTasks("")))
+    .catch((error) => {
+      dispatch(tasksFailure(error));
+    });
+};
