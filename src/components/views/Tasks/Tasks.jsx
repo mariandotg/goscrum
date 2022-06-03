@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import "react-loading-skeleton/dist/skeleton.css";
 import "./Tasks.styles.css";
-import { getTasks, deleteTask } from "../../../store/actions/tasksActions";
+import { getTasks, deleteTask, editTaskStatus } from "../../../store/actions/tasksActions";
 import { useResize } from "../../../hooks/useResize";
 import Header from "../../Header/Header";
 import Card from "../../Card/Card";
@@ -52,7 +52,7 @@ const Tasks = () => {
 
   const renderAllCards = () => {
     return renderList?.map((data) => (
-      <Card key={data._id} data={data} deleteCard={handleDelete} />
+      <Card key={data._id} data={data} deleteCard={handleDelete} editCardStatus={handleEditCardStatus}/>
     ));
   };
 
@@ -60,7 +60,7 @@ const Tasks = () => {
     return renderList
       ?.filter((data) => data.status === text)
       .map((data) => (
-        <Card key={data._id} data={data} deleteCard={handleDelete} />
+        <Card key={data._id} data={data} deleteCard={handleDelete} editCardStatus={handleEditCardStatus}/>
       ));
   };
 
@@ -77,6 +77,8 @@ const Tasks = () => {
   }, 1000);
 
   const handleDelete = (id) => dispatch(deleteTask(id));
+
+  const handleEditCardStatus = (data) => dispatch(editTaskStatus(data));
 
   return (
     <>
