@@ -1,6 +1,9 @@
 import { useState } from "react";
 const Card = ({
+  deleteCard,
+  editCardStatus,
   data: {
+    _id,
     title,
     createdAt,
     user: { userName },
@@ -8,6 +11,7 @@ const Card = ({
     status,
     importance,
   },
+  data,
 }) => {
   const [showMore, setShowMore] = useState(false);
   const dateTime = new Date(createdAt).toLocaleString() + " hs.";
@@ -21,11 +25,17 @@ const Card = ({
 
   return (
     <div className="card">
-      <div className="close">X</div>
+      <div className="close" onClick={() => deleteCard(_id)}>
+        X
+      </div>
       <h3>{title}</h3>
       <h6>{dateTime}</h6>
       <h5>{userName}</h5>
-      <button className={status.toLowerCase()} type="button">
+      <button
+        className={status.toLowerCase()}
+        type="button"
+        onClick={() => editCardStatus(data)}
+      >
         {status}
       </button>
       <button className={importance.toLowerCase()} type="button">
